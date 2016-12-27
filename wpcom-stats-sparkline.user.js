@@ -5,6 +5,7 @@
 // @include     https://*.wordpress.com/*
 // @version     1.0.0
 // @updateURL   https://github.com/tpenguinltg/wpcom-stats-sparkline/raw/master/wpcom-stats-sparkline.user.js
+// @homepageURL https://greasyfork.org/en/scripts/26076-wordpress-com-stats-sparkline
 // @homepageURL https://github.com/tpenguinltg/wpcom-stats-sparkline
 // @grant       none
 // @license     MPLv2.0; http://mozilla.org/MPL/2.0/
