@@ -12,15 +12,23 @@
 // @copyright   2016, tPenguinLTG (http://tpenguinltg.wordpress.com/)
 // ==/UserScript==
 
-window.onload = function() {
-  var blogUrlAnchor = document.querySelector("#wp-admin-bar-blog-info a.ab-item");
-  if (!blogUrlAnchor) return;
+// Function by dystroy. From http://stackoverflow.com/a/14388512
+function fetchJSONFile(path, callback, fallback) {
+  var httpRequest = new XMLHttpRequest();
+  httpRequest.onreadystatechange = function() {
+    if (httpRequest.readyState === 4) {
+      if (httpRequest.status === 200) {
+        if (callback) callback(JSON.parse(httpRequest.responseText));
+      } else if (fallback) {
+        fallback();
+      }
+    }
+  };
+  httpRequest.open('GET', path);
+  httpRequest.send();
+}
 
-  var blogUrl = blogUrlAnchor.href;
-
-  // only act on sites where the user is a member
-  if (!document.URL.startsWith(blogUrl)) return;
-
+function addSparkline(blogUrl) {
   var sparklineImage = document.createElement("img");
   sparklineImage.src = blogUrl + "/wp-includes/charts/admin-bar-hours-scale.php";
   sparklineImage.alt = "Stats";
@@ -37,4 +45,23 @@ window.onload = function() {
   menuItem.appendChild(statsLink);
 
   document.getElementById("wp-admin-bar-root-default").appendChild(menuItem);
+}
+
+window.onload = function() {
+  var blogUrlAnchor = document.querySelector("#wp-admin-bar-blog-info a.ab-item");
+  if (!blogUrlAnchor) return;
+
+  var blogUrl = blogUrlAnchor.href.replace(/\/+$/, "");
+
+  // only act on sites where the user is a member
+  if (document.URL.startsWith(blogUrl)) {
+    addSparkline(blogUrl);
+  } else {
+    // check for custom domain
+    fetchJSONFile("https://public-api.wordpress.com/rest/v1.1/sites/" + window.location.hostname,
+      function(data) {
+        if (blogUrl == data.URL) addSparkline(blogUrl);
+      }
+    );
+  }
 }
