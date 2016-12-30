@@ -9,5 +9,20 @@ Alternatively, visit the URL below:
 
 [https://github.com/tpenguinltg/wpcom-stats-sparkline/raw/master/wpcom-stats-sparkline.user.js](https://github.com/tpenguinltg/wpcom-stats-sparkline/raw/master/wpcom-stats-sparkline.user.js)
 
+### Custom Domains
+
+If you own a custom domain, you will have to add the domain to the script's includes. Go to the script's options in your extension and add the following as an include, where `example.com` is your custom domain:
+
+```
+https://example.com/*
+```
+
+If your extension does not have support for user includes, edit the script and add this after the `@include` line, again where `example.com` is your custom domain:
+
+```javascript
+// @include https://example.com/*
+```
+
 ## Changelog
 * **v1.0.0:** Initial release
+* **v1.1.0:** Add support for custom domains
