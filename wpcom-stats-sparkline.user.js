@@ -28,9 +28,9 @@ function fetchJSONFile(path, callback, fallback) {
   httpRequest.send();
 }
 
-function addSparkline(blogUrl) {
+function addSparkline(src) {
   var sparklineImage = document.createElement("img");
-  sparklineImage.src = blogUrl + "/wp-includes/charts/admin-bar-hours-scale.php";
+  sparklineImage.src = src;
   sparklineImage.alt = "Stats";
   sparklineImage.title = "Showing site views per hour for the last 48 hours. Click for full Site Stats.";
   sparklineImage.style.paddingTop = "4px";
@@ -51,16 +51,20 @@ window.onload = function() {
   var blogUrlAnchor = document.querySelector("#wp-admin-bar-blog-info a.ab-item");
   if (!blogUrlAnchor) return;
 
-  var blogUrl = blogUrlAnchor.href.replace(/\/+$/, "");
+  var scrapedBlogUrl = blogUrlAnchor.href.replace(/\/+$/, "");
+
+  // scraped: https://example.wordpress.com/wp-includes/charts/admin-bar-hours-scale-2x.php?masterbar=1
+  // target:  https://example.wordpress.com/wp-includes/charts/admin-bar-hours-scale.php
+  var sparklineImageSrc = document.querySelector("#wp-admin-bar-blog-stats img").src.replace(/-2x|\?.*/g, "");
 
   // only act on sites where the user is a member
-  if (document.URL.startsWith(blogUrl)) {
-    addSparkline(blogUrl);
+  if (document.URL.startsWith(scrapedBlogUrl)) {
+    addSparkline(sparklineImageSrc);
   } else {
     // check for custom domain
     fetchJSONFile("https://public-api.wordpress.com/rest/v1.1/sites/" + window.location.hostname,
       function(data) {
-        if (blogUrl == data.URL) addSparkline(blogUrl);
+        if (scrapedBlogUrl == data.URL) addSparkline(sparklineImageSrc);
       }
     );
   }
