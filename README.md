@@ -24,5 +24,6 @@ If your extension does not have support for user includes, edit the script and a
 ```
 
 ## Changelog
+* **v1.2.0:** Fixed for WP update as of June 16, 2019
 * **v1.1.0:** Add support for custom domains
 * **v1.0.0:** Initial release
