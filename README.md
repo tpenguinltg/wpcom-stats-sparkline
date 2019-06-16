@@ -24,5 +24,5 @@ If your extension does not have support for user includes, edit the script and a
 ```
 
 ## Changelog
-* **v1.0.0:** Initial release
 * **v1.1.0:** Add support for custom domains
+* **v1.0.0:** Initial release
