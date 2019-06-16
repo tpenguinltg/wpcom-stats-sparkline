@@ -9,7 +9,7 @@
 // @homepageURL https://github.com/tpenguinltg/wpcom-stats-sparkline
 // @grant       none
 // @license     MPLv2.0; http://mozilla.org/MPL/2.0/
-// @copyright   2016, tPenguinLTG (http://tpenguinltg.wordpress.com/)
+// @copyright   2016-2019, tPenguinLTG (http://tpenguinltg.wordpress.com/)
 // ==/UserScript==
 
 // Function by dystroy. From http://stackoverflow.com/a/14388512
