@@ -28,7 +28,7 @@ function fetchJSONFile(path, callback, fallback) {
   httpRequest.send();
 }
 
-function addSparkline(src) {
+function addSparkline(src, statsUrl) {
   var sparklineImage = document.createElement("img");
   sparklineImage.src = src;
   sparklineImage.alt = "Stats";
@@ -38,7 +38,7 @@ function addSparkline(src) {
 
   var statsLink = document.createElement("a");
   statsLink.appendChild(sparklineImage);
-  statsLink.href = "https://wordpress.com/stats/" + window.location.hostname;
+  statsLink.href = statsUrl;
   statsLink.className = "ab-item";
 
   var menuItem = document.createElement("li");
@@ -48,24 +48,12 @@ function addSparkline(src) {
 }
 
 window.onload = function() {
-  var blogUrlAnchor = document.querySelector("#wp-admin-bar-blog-info a.ab-item");
-  if (!blogUrlAnchor) return;
+  var statsUrl = document.querySelector("#wp-admin-bar-blog a.ab-item").href;
+  if (!statsUrl) return;
 
-  var scrapedBlogUrl = blogUrlAnchor.href.replace(/\/+$/, "");
+  var blogDomain = statsUrl.replace(/\/+$/, "").split("/").pop();
 
-  // scraped: https://example.wordpress.com/wp-includes/charts/admin-bar-hours-scale-2x.php?masterbar=1
   // target:  https://example.wordpress.com/wp-includes/charts/admin-bar-hours-scale.php
-  var sparklineImageSrc = document.querySelector("#wp-admin-bar-blog-stats img").src.replace(/-2x|\?.*/g, "");
-
-  // only act on sites where the user is a member
-  if (document.URL.startsWith(scrapedBlogUrl)) {
-    addSparkline(sparklineImageSrc);
-  } else {
-    // check for custom domain
-    fetchJSONFile("https://public-api.wordpress.com/rest/v1.1/sites/" + window.location.hostname,
-      function(data) {
-        if (scrapedBlogUrl == data.URL) addSparkline(sparklineImageSrc);
-      }
-    );
-  }
+  var sparklineImageSrc = "//" + blogDomain + "/wp-includes/charts/admin-bar-hours-scale.php";
+  addSparkline(sparklineImageSrc, statsUrl);
 }
